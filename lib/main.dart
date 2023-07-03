@@ -22,8 +22,35 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePage extends State<HomePage> {
-  bool alignmentEnd = false;
+  int alignmentIndex = 0;
   bool showAdditionalContainer = false;
+
+  void cycleAlignment() {
+    setState(
+      () {
+        alignmentIndex = (alignmentIndex + 1) % 6;
+      },
+    );
+  }
+
+  MainAxisAlignment getMainAxisAlignment() {
+    switch (alignmentIndex) {
+      case 0:
+        return MainAxisAlignment.start;
+      case 1:
+        return MainAxisAlignment.center;
+      case 2:
+        return MainAxisAlignment.spaceAround;
+      case 3:
+        return MainAxisAlignment.spaceBetween;
+      case 4:
+        return MainAxisAlignment.spaceEvenly;
+      case 5:
+        return MainAxisAlignment.end;
+      default:
+        return MainAxisAlignment.start;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,11 +64,9 @@ class _HomePage extends State<HomePage> {
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    setState(
-                      () {
-                        alignmentEnd = !alignmentEnd;
-                      },
-                    );
+                    setState(() {
+                      cycleAlignment();
+                    });
                   },
                   child: Text('A'),
                 ),
@@ -58,9 +83,7 @@ class _HomePage extends State<HomePage> {
           ),
           Expanded(
             child: Column(
-              mainAxisAlignment: alignmentEnd
-                  ? MainAxisAlignment.end
-                  : MainAxisAlignment.start,
+              mainAxisAlignment: getMainAxisAlignment(),
               children: [
                 Container(
                   height: 90,
@@ -78,7 +101,7 @@ class _HomePage extends State<HomePage> {
                   Container(
                     height: 90,
                     color: Colors.yellow,
-                  )
+                  ),
               ],
             ),
           ),
